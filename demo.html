@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="js/require.js"></script>
+		<script src="js/config.js"></script>
+		<link rel="stylesheet" href="css/main.css" />
+	</head>
+	<body>
+		<div class="lrc">
+			<div class="contain"></div>
+		</div>
+		<ul class="music-list">
+			
+		</ul>
+		<audio src="" id="audio" controls></audio>
+		
+		<script>
+			
+			require(["music","audio","jquery"],function(music,audio,$){
+			
+				
+				music.getlist(function(data){
+					
+					var html = "";
+					data.forEach(function(item,i){
+					
+					html += "<li data-src='"+ item.src +
+						"' data-lrc='"+ item.lrc +"'>" + 
+						item.name +
+					"</li>";
+					$('.music-list').html(html)
+					
+				})
+					
+				})
+				
+				/*music.getlrc(function(result){
+					var lrcs = result.split("\n");
+					console.log(lrcs)
+					var arr = [];
+					lrc.forEach(function(item,i){
+						var lastIndexOf = item.lastIndexOf("]");
+						var str2 = item.substring(lastIndexOf +1 );
+						var time = item.substr(1,lastIndexOf - 1)
+						//console.log(time)
+						time = new Date("1970-01-01 00:"+time).getTime();
+						var time2 = new Date("1970-01-01 00:00:00").getTime();
+						
+						var time3 = Math.round((time - time2) / 1000) - 1;
+						//time3 = time3.toFixed(2)
+						arr.push("<p class='j-tiem-"+ time3 +"'>"+ str2 +"</p>");
+								
+					})
+					
+					$('.lrc').html(arr.join(""));
+				})*/
+				
+				$('.music-list').on("click","li",function(){
+					var src = $(this).data("src");
+					var lrc = $(this).data("lrc");
+					audio.checkout(src)
+					audio.lrc(lrc)
+					audio.play()
+					//console.log(arr)
+				})
+				
+			})
+			
+		</script>
+	</body>
+</html>
